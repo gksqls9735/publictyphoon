@@ -7,5 +7,6 @@ public interface MENU_CHOICE {
 	public static final int SEARCH = 4;
 	public static final int UPDATE = 5;
 	public static final int DELETE = 6;
-	public static final int EXIT = 7;
+	public static final int ALLDELETE = 7;
+	public static final int EXIT = 8;
 }

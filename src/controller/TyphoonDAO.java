@@ -9,8 +9,45 @@ import java.util.ArrayList;
 import model.TyphoonVO;
 
 public class TyphoonDAO {
+
+	public static boolean checktbl() {
+		String sql = "SELECT COUNT(*) FROM TYPH";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean flag = false;
+		try {
+			con = DBUtil.makeConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				if(rs.getInt("COUNT(*)") != 0) {
+					flag = true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return flag;
+	}
 	
-	public static void insertTyphoonInfo(ArrayList<TyphoonVO> typSelectList) {
+	public static void insertTyphoon(ArrayList<TyphoonVO> typSelectList) {
 		if (typSelectList.size() < 1) {
 			System.out.println("입력할 데이터가 없습니다.");
 			return;
@@ -21,7 +58,7 @@ public class TyphoonDAO {
 		try {
 			con = DBUtil.makeConnection();
 			pstmt = con.prepareStatement(sql);
-			
+
 			for (TyphoonVO data : typSelectList) {
 				pstmt.setInt(1, data.getTyp_seq());
 				pstmt.setString(2, data.getTyp_en());
@@ -56,11 +93,11 @@ public class TyphoonDAO {
 			}
 		}
 	}
-	
-	public static ArrayList<TyphoonVO> selectTyphoonInfo(){
-		ArrayList<TyphoonVO> list = null;
-		String sql = "SELECT * FROM TYPH";
-		
+
+	public static ArrayList<TyphoonVO> selectTyphoon() {
+		ArrayList<TyphoonVO> list = new ArrayList<TyphoonVO>();
+		String sql = "SELECT * FROM TYPH ORDER BY TYP_SEQ ASC";
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -70,9 +107,8 @@ public class TyphoonDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				list = new ArrayList<TyphoonVO>();
 				TyphoonVO typ = new TyphoonVO();
-				
+
 				typ.setTyp_seq(rs.getInt("TYP_SEQ"));
 				typ.setTyp_en(rs.getString("TYP_EN"));
 				typ.setTm_st(rs.getString("TM_ST"));
@@ -81,7 +117,7 @@ public class TyphoonDAO {
 				typ.setTyp_ws(rs.getInt("TYP_WS"));
 				typ.setTyp_name(rs.getString("TYP_NAME"));
 				typ.setEff(rs.getInt("EFF"));
-				
+
 				System.out.println(typ);
 				list.add(typ);
 			}
@@ -104,50 +140,50 @@ public class TyphoonDAO {
 		}
 		return list;
 	}
-	
+
 	public static void updateTyphoon(int typ_seq, String typ_en, String typ_name) {
 		if (typ_seq == 0) {
 			return;
 		}
-		
+
 		String sql = "UPDATE TYPH SET TYP_EN = ?, TYP_NAME = ? WHERE TYP_SEQ = ?";
-		
-		Connection con = null; 
-        PreparedStatement pstmt = null; 
-        try {
-            con = DBUtil.makeConnection();
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, typ_en);
-            pstmt.setString(2, typ_name);
-            pstmt.setInt(3, typ_seq);
 
-            int value = pstmt.executeUpdate();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = DBUtil.makeConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, typ_en);
+			pstmt.setString(2, typ_name);
+			pstmt.setInt(3, typ_seq);
 
-            if(value == 1) {
-                System.out.println(typ_seq+"번 수정완료");
-            }else {
-                System.out.println(typ_seq+"번 수정실패");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-                try {
-                    if(pstmt != null) {
-                        pstmt.close();
-                    }
-                    if(con != null) {
-                        con.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-        }
-		
+			int value = pstmt.executeUpdate();
+
+			if (value == 1) {
+				System.out.println(typ_seq + "번 수정완료");
+			} else {
+				System.out.println(typ_seq + "번 수정실패");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
-	
+
 	public static void searchTyphoon(String typ_name) {
 		String sql = "SELECT * FROM TYPH WHERE TYP_NAME = ?";
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -159,10 +195,10 @@ public class TyphoonDAO {
 
 			if (!rs.next()) {
 				System.out.println(typ_name + "에 해당하는 태풍은 존재하지 않습니다.");
-			}else {
+			} else {
 				do {
 					TyphoonVO typ = new TyphoonVO();
-					
+
 					typ.setTyp_seq(rs.getInt("TYP_SEQ"));
 					typ.setTyp_en(rs.getString("TYP_EN"));
 					typ.setTm_st(rs.getString("TM_ST"));
@@ -171,9 +207,9 @@ public class TyphoonDAO {
 					typ.setTyp_ws(rs.getInt("TYP_WS"));
 					typ.setTyp_name(rs.getString("TYP_NAME"));
 					typ.setEff(rs.getInt("EFF"));
-					
+
 					System.out.println(typ);
-					
+
 				} while (rs.next());
 			}
 		} catch (SQLException e) {
@@ -194,17 +230,17 @@ public class TyphoonDAO {
 			}
 		}
 	}
-	
+
 	public static void deleteTyphoon(int typ_seq) {
 		String sql = "DELETE FROM TYPH WHERE TYP_SEQ = ?";
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
 			con = DBUtil.makeConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, typ_seq);
-			
+
 			int i = pstmt.executeUpdate();
 			if (i != 0) {
 				System.out.println("정보 삭제완료");
@@ -226,5 +262,35 @@ public class TyphoonDAO {
 			}
 		}
 	}
-		
+
+	public static void alldeleteTyphoon() {
+		String sql = "DELETE FROM TYPH";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = DBUtil.makeConnection();
+			pstmt = con.prepareStatement(sql);
+
+			int i = pstmt.executeUpdate();
+			if (i > 0) {
+				System.out.println("정보 삭제완료");
+			} else {
+				System.out.println("정보 삭제실패");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

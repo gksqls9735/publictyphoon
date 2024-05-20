@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class DBUtil {
 	public static Connection makeConnection() {
-		String filePath = "D:/doitjava/publicData/db.properties";
+		String filePath = "C:/Users/user1/git/publictyphoon/src/db.properties";
 		Connection con = null;
 		try {
 			//db.properties로 db주소, 사용자명, 사용자 암호 로드하기

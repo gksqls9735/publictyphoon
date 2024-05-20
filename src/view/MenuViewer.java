@@ -14,8 +14,9 @@ public class MenuViewer {
 		System.out.println("3. 테이블 읽어오기");
 		System.out.println("4. 조회하기");
 		System.out.println("5. 수정하기");
-		System.out.println("6. 삭제하기");
-		System.out.println("7. 종료하기");
+		System.out.println("6. 개별 삭제하기");
+		System.out.println("7. 전체 삭제하기");
+		System.out.println("8. 종료하기");
 		System.out.print("번호 선택: ");
 	}
 }
