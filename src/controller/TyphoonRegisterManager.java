@@ -26,9 +26,17 @@ public class TyphoonRegisterManager {
 
 	public static void updateTyphoonInfo(ArrayList<TyphoonVO> typSelectList) {
 		TyphoonDAO td = new TyphoonDAO();
+		String header = String.format(
+			    "%-5s %-15s %-12s %-12s %-10s %-10s %-10s %-12s",
+			    "번호", "영어이름", "생성일", "소멸일", "최저 기압", "최대 풍속", "태풍이름", "한반도 영향"
+			);
+		System.out.println(header);
+		System.out.println("=====================================================================================================================================================");
 		for(TyphoonVO data : typSelectList) {
 			System.out.println(data);
 		}
+		System.out.println("=====================================================================================================================================================");
+		System.out.println();
 		System.out.print("업데이트할 항목의 번호 입력: ");
 		int typ_seq = Integer.parseInt(sc.nextLine());
 		System.out.print("변경할 정보 입력");
@@ -48,6 +56,12 @@ public class TyphoonRegisterManager {
 
 	public static void deleteTyphoonInfo(ArrayList<TyphoonVO> typSelectList) {
 		TyphoonDAO td = new TyphoonDAO();
+		System.out.println("=====================================================================================================================================================");
+		for(TyphoonVO data : typSelectList) {
+			System.out.println(data);
+		}
+		System.out.println("=====================================================================================================================================================");
+		System.out.println();
 		System.out.print("삭제할 태풍의 번호를 입력해주세요: ");
 		int typ_seq = Integer.parseInt(sc.nextLine());
 		td.deleteTyphoon(typ_seq);

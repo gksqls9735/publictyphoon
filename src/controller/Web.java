@@ -84,6 +84,11 @@ public class Web {
 
 			Document doc = parseXML(conn.getInputStream());
 
+			String header = String.format(
+				    "%-5s %-15s %-9s %-12s %-10s %-10s %-10s %-12s",
+				    "번호", "영어이름", "생성일", "소멸일", "최저 기압", "최대 풍속", "태풍이름", "한반도 영향"
+				);
+			System.out.println(header);
 			// item 태그객체 목록으로 가져오기
 			NodeList descNodes = doc.getElementsByTagName("info");
 			// 각 item 태그의 자식 태그에서 정보 가져오기
@@ -133,10 +138,11 @@ public class Web {
 				}
 				list.add(data);
 			}
-
+			System.out.println("=====================================================================================================================================================");
 			for (TyphoonVO d : list) {
 				System.out.println(d);
 			}
+			System.out.println("=====================================================================================================================================================");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

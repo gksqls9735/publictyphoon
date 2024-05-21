@@ -76,10 +76,13 @@ public class TyphoonVO {
         this.eff = eff;
     }
 
+
 	@Override
 	public String toString() {
-		return "TyphoonVO [typ_seq=" + typ_seq + ", typ_en=" + typ_en + ", tm_st=" + tm_st + ", tm_ed=" + tm_ed
-				+ ", typ_ps=" + typ_ps + ", typ_ws=" + typ_ws + ", typ_name=" + typ_name + ", eff=" + eff + "]";
+		return String.format(
+			    "%-5s %-15s %-12s %-12s %-10s %-10s %-15s %-12s",
+			    typ_seq, typ_en, tm_st, tm_ed, typ_ps, typ_ws, typ_name, eff
+			);
 	}
 
 

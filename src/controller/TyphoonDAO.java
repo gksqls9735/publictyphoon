@@ -106,6 +106,7 @@ public class TyphoonDAO {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
+			System.out.println("=====================================================================================================================================================");
 			while (rs.next()) {
 				TyphoonVO typ = new TyphoonVO();
 
@@ -117,10 +118,10 @@ public class TyphoonDAO {
 				typ.setTyp_ws(rs.getInt("TYP_WS"));
 				typ.setTyp_name(rs.getString("TYP_NAME"));
 				typ.setEff(rs.getInt("EFF"));
-
 				System.out.println(typ);
 				list.add(typ);
 			}
+			System.out.println("=====================================================================================================================================================");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

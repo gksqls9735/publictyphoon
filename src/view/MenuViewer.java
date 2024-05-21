@@ -19,4 +19,5 @@ public class MenuViewer {
 		System.out.println("8. 종료하기");
 		System.out.print("번호 선택: ");
 	}
+	
 }
