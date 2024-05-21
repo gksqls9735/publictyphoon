@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,6 +29,7 @@ public class Web {
 	public static Scanner sc = new Scanner(System.in);
 
 	public static ArrayList<TyphoonVO> webConnect() {
+		
 		ArrayList<TyphoonVO> list = new ArrayList<TyphoonVO>();
 		String year = null;
 	
@@ -41,12 +44,18 @@ public class Web {
 			
 		} while (true);
 		// 요청 url 생성
+		String filePath = "C:/Users/user1/git/publictyphoon/src/db.properties";
+		Properties properties = null;
+		String key = null;
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://apis.data.go.kr/1360000/SfcYearlyInfoService/getTyphoonList");
 
 		try {
+			properties = new Properties();
+			properties.load(new FileReader(filePath));
+			key = properties.getProperty("key");
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-					+ "=tHGuXKnUrfjRXdJNLC%2BNJRlnd1DOMY%2B4lIapNAuiJa17%2BESaOVn38TYiW0XqpLrcDANlMhkXZl2iw%2Fdr7fftxA%3D%3D");
+					+ key);
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8"));
